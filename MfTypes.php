@@ -2,36 +2,52 @@
 
 namespace Apps\Fintech\Packages\Mf\Types;
 
+use Apps\Fintech\Packages\Mf\Types\Model\AppsFintechMfTypes;
 use System\Base\BasePackage;
 
 class MfTypes extends BasePackage
 {
-    //protected $modelToUse = ::class;
+    protected $modelToUse = AppsFintechMfTypes::class;
 
     protected $packageName = 'mftypes';
 
     public $mftypes;
 
-    public function getMfTypesById($id)
+    public function getMfTypeByName($name)
     {
-        $mftypes = $this->getById($id);
-
-        if ($mftypes) {
-            //
-            $this->addResponse('Success');
-
-            return;
+        if ($this->config->databasetype === 'db') {
+            $conditions =
+                [
+                    'conditions'    => 'name = :name:',
+                    'bind'          =>
+                        [
+                            'name'  => $name
+                        ]
+                ];
+        } else {
+            $conditions =
+                [
+                    'conditions'    => [
+                        ['name', '=', $name]
+                    ]
+                ];
         }
 
-        $this->addResponse('Error', 1);
+        $mftype = $this->getByParams($conditions);
+
+        if ($mftype && count($mftype) > 0) {
+            return $mftype[0];
+        }
+
+        return false;
     }
 
-    public function addMfTypes($data)
+    public function addMfHouses($data)
     {
         //
     }
 
-    public function updateMfTypes($data)
+    public function updateMfHouses($data)
     {
         $mftypes = $this->getById($id);
 
@@ -45,7 +61,7 @@ class MfTypes extends BasePackage
         $this->addResponse('Error', 1);
     }
 
-    public function removeMfTypes($data)
+    public function removeMfHouses($data)
     {
         $mftypes = $this->getById($id);
 

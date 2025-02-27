@@ -15,34 +15,26 @@ class MfTypes
                 new Column(
                     'id',
                     [
-                        'type'          => Column::TYPE_INTEGER,
+                        'type'          => Column::TYPE_TINYINTEGER,
                         'notNull'       => true,
                         'autoIncrement' => true,
                         'primary'       => true,
                     ]
                 ),
                 new Column(
-                    'first_name',
+                    'name',
                     [
                         'type'          => Column::TYPE_VARCHAR,
-                        'size'          => 50,
+                        'size'          => 100,
                         'notNull'       => true,
                     ]
                 ),
-                new Column(
-                    'last_name',
-                    [
-                        'type'          => Column::TYPE_VARCHAR,
-                        'size'          => 50,
-                        'notNull'       => true,
-                    ]
-                )
             ],
             'indexes' => [
                 new Index(
                     'column_UNIQUE',
                     [
-                        'last_name'
+                        'name'
                     ],
                     'UNIQUE'
                 )
@@ -60,7 +52,7 @@ class MfTypes
             new Index(
                 'column_INDEX',
                 [
-                    'first_name'
+                    'name'
                 ],
                 'INDEX'
             )

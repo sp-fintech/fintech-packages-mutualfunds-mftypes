@@ -8,7 +8,5 @@ class AppsFintechMfTypes extends BaseModel
 {
     public $id;
 
-    public $first_name;
-
-    public $last_name;
+    public $name;
 }

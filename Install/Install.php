@@ -3,10 +3,31 @@
 namespace Apps\Fintech\Packages\Mf\Types\Install;
 
 use Apps\Fintech\Packages\Mf\Types\Install\Schema\MfTypes;
+use Apps\Fintech\Packages\Mf\Types\Model\AppsFintechMfTypes;
 use System\Base\BasePackage;
+use System\Base\Providers\ModulesServiceProvider\DbInstaller;
 
 class Install extends BasePackage
 {
+    protected $databases;
+
+    protected $dbInstaller;
+
+    public function init()
+    {
+        $this->databases =
+            [
+                'apps_fintech_mf_types'  => [
+                    'schema'        => new MfTypes,
+                    'model'         => new AppsFintechMfTypes
+                ],
+            ];
+
+        $this->dbInstaller = new DbInstaller;
+
+        return $this;
+    }
+
     public function install()
     {
         $this->preInstall();
@@ -23,21 +44,32 @@ class Install extends BasePackage
         return true;
     }
 
-    protected function installDb()
+    public function installDb()
     {
-        //Refer to Package installation for Core.
+        $this->dbInstaller->installDb($this->databases);
+
         return true;
     }
 
-    protected function postInstall()
+    public function postInstall()
     {
+        //Do anything after installation.
         return true;
     }
 
-    public function uninstall()
+    public function truncate()
     {
-        //Check Relationship
-        //Drop Table(s)
+        $this->dbInstaller->truncate($this->databases);
+    }
+
+    public function uninstall($remove = false)
+    {
+        if ($remove) {
+            //Check Relationship
+            //Drop Table(s)
+            $this->dbInstaller->uninstallDb($this->databases);
+        }
+
         return true;
     }
 }
